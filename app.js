@@ -20,6 +20,11 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 
+app.use(express.static(path.join(__dirname, 'website')));
+
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'website', 'index.html'));
+});
 
 
 
