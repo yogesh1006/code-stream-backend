@@ -23,18 +23,18 @@ router.post('/auth/:id',VideoController.getVideo)
 //Likedvideos routes
 router.get('/api/get_all_liked_videos',LikedVideosController.getAllLikedVideos)
 router.post('/api/add_to_liked_videos',LikedVideosController.addToLikeVideo)
-router.delete('/api/remove_liked_video',LikedVideosController.removeLikedVideo)
+router.post('/api/remove_liked_video',LikedVideosController.removeLikedVideo)
 
 //Saved video routes
 router.get('/api/get_all_saved_videos',SavedVideoController.getAllSavedVideos)
 router.post('/api/add_to_save_videos',SavedVideoController.addToSavedVideo)
-router.delete('/api/remove_saved_video',SavedVideoController.removeSavedVideo)
+router.post('/api/remove_saved_video',SavedVideoController.removeSavedVideo)
 
 //Playlist routes
 router.post('/api/create_playlist',PlaylistController.createPlaylist)
 router.post('/api/add_to_playlist/:id',PlaylistController.addToPlaylist)
 router.get('/api/get_user_playlist',PlaylistController.getUserPlaylists)
-router.delete('/api/remove_from_playlist/:id',PlaylistController.removeFromPlaylist)
+router.post('/api/remove_from_playlist/:id',PlaylistController.removeFromPlaylist)
 router.post('/api/delete_playlist',PlaylistController.deletePlaylist)
 
 module.exports=router

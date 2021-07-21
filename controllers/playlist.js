@@ -74,20 +74,16 @@ module.exports = {
      },
 
      deletePlaylist: async (req, res) => {
-        console.log("inside deletePlayList") 
         const {  playlistName } = req.body;
         try{
             const user = await User.findById(req.user._id);
-            console.log("user",user,playlistName)
             let playlist=user.playlist.filter(play=>play.playlistName!=playlistName)
-            console.log("play",playlist)
             const updateUser = await User.findByIdAndUpdate(req.user._id,{playlist:playlist},{new : true})
             res.json({
                 status: 'success',
                 result: "Playlist deleted successfully."
             })
         } catch (error) {
-            console.log("error",error)
             res.status(400).json({
                 message: (error && error.message) || 'Oops! Failed to delete playlist.'
             })

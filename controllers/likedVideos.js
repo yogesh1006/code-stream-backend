@@ -19,14 +19,38 @@ module.exports = {
     }
   },
 
+  // addToLikeVideo: async (req, res) => {
+  //   try {
+  //      const updatedData = await User.findOneAndUpdate({ username: req.body.username }, { $push: { likedVideos: req.body.id } },{new:true})
+  //           res.json({
+  //               status: 'success',
+  //               result: "Added to the Liked Videos.",
+  //               data:updatedData
+  //           })
+  //   } catch (error) {
+  //      res.status(400).json({
+  //       message: (error && error.message) || "Oops! Failed to Like Video.",
+  //     });
+  //   }
+  // },
   addToLikeVideo: async (req, res) => {
     try {
-       const updatedData = await User.findOneAndUpdate({ username: req.body.username }, { $push: { likedVideos: req.body.id } },{new:true})
-            res.json({
-                status: 'success',
-                result: "Added to the Liked Videos.",
-                data:updatedData
-            })
+      let user = await User.findById(req.user._id);
+      let updatedLikedVideo = user.likedVideos.map(item=>item)
+      if(!user.likedVideos.includes(req.body.id)){
+        updatedLikedVideo.push(req.body.id)
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user._id,
+        { likedVideos: updatedLikedVideo },
+        { new: true }
+      );
+      res.json({
+        status: "success",
+        result: "Added to the Saved Videos.",
+        data: updatedUser,
+      });
     } catch (error) {
        res.status(400).json({
         message: (error && error.message) || "Oops! Failed to Like Video.",
@@ -37,11 +61,13 @@ module.exports = {
   
   removeLikedVideo: async (req, res) => {
     try {
-       const deletedData = await User.findOneAndUpdate({ username: req.body.username }, { $pull: { likedVideos: req.body.id } },{new:true});
+           const user = await User.findById(req.user._id);
+           const updatedLikedVideos =  user.likedVideos.filter((item)=>item!=req.body.id)
+           const updatedUser = await User.findByIdAndUpdate(req.user._id,{likedVideos:updatedLikedVideos},{new:true})
             res.json({
                 success: true,
                 result: "Video removed from liked videos.",
-                data:deletedData
+                data:updatedUser
             })
     } catch (error) {
         res.status(400).json({

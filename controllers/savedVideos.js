@@ -14,7 +14,6 @@ module.exports = {
         data: savedVideos,
       });
     } catch (error) {
-      console.log("error");
       res.status(400).json({
         message: (error && error.message) || "Oops! Failed to get SavedVideos.",
       });
@@ -24,13 +23,14 @@ module.exports = {
   addToSavedVideo: async (req, res) => {
     try {
       let user = await User.findById(req.user._id);
-      if (!user.savedVideos.includes(req.body.id)) {
-        user.savedVideos.push(req.body.id);
+      let updatedSavedVideo = user.savedVideos.map(item=>item)
+      if(!user.savedVideos.includes(req.body.id)){
+        updatedSavedVideo.push(req.body.id)
       }
 
-      const updatedUser = User.findByIdAndUpdate(
+      const updatedUser = await User.findByIdAndUpdate(
         req.user._id,
-        { savedVideos: user.savedVideos },
+        { savedVideos: updatedSavedVideo },
         { new: true }
       );
       res.json({
