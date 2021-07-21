@@ -21,7 +21,7 @@ module.exports = {
     }
   },
 
-  addToSavedVideo: async (res, res) => {
+  addToSavedVideo: async (req, res) => {
     try {
       const user = await User.findById(req.user._id);
       user = user.toJSON();
