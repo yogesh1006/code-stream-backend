@@ -24,7 +24,6 @@ module.exports = {
   addToSavedVideo: async (req, res) => {
     try {
       let user = await User.findById(req.user._id);
-      user = user.toJSON();
       if (!user.savedVideos.includes(req.body.id)) {
         user.savedVideos.push(req.body.id);
       }
